@@ -1,0 +1,31 @@
+
+name: Embedded C Unit Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  protection-tests:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile protection tests
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -UNDEBUG \
+            -IInc \
+            Src/protection.c \
+            Src/critical_fault.c \
+            tests/test_protection_timed.c \
+            -o test_protection_timed \
+            -lm
+
+      - name: Run protection tests
+        run: ./test_protection_timed

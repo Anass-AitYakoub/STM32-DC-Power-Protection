@@ -1,0 +1,24 @@
+
+# Build outputs
+build/
+test-results/
+*.exe
+*.dll
+*.elf
+*.bin
+*.hex
+*.o
+*.obj
+
+# VS Code local settings
+.vscode/
+
+# Operating system files
+Thumbs.db
+.DS_Store
+
+# Python cache
+__pycache__/
+*.pyc
+git rm -r --cached .settings
+.settings/
