@@ -24,7 +24,7 @@ from matplotlib.animation import FuncAnimation
 
 from serial_protocol import ProtectionData
 from serial_reader import STM32SerialReader
-
+from uart_simulator import UARTSimulator
 
 # --------------------------------------------------
 # Command-line configuration
@@ -36,7 +36,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument(
     "--mode",
-    choices=["simulation", "serial"],
+    choices=["simulation", "uart-simulator", "serial"],
     default="simulation",
     help="Dashboard operating mode"
 )
@@ -74,7 +74,7 @@ start_time = time.monotonic()
 sample_index = 0
 
 serial_reader = None
-
+uart_simulator = UARTSimulator()
 
 # --------------------------------------------------
 # CSV logging
@@ -216,16 +216,23 @@ def connect_serial():
         raise SystemExit(1) from error
 
 
+
 def receive_data():
     """Get one measurement from the selected mode."""
 
     if args.mode == "simulation":
         return generate_simulated_data()
 
-    if serial_reader is None:
-        return None
+    if args.mode == "uart-simulator":
+        return uart_simulator.read_data()
 
-    return serial_reader.read_data()
+    if args.mode == "serial":
+        if serial_reader is None:
+            return None
+
+        return serial_reader.read_data()
+
+    return None
 
 
 # --------------------------------------------------

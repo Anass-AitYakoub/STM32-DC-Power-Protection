@@ -1,5 +1,5 @@
 
-name: Embedded C Unit Tests
+name: Firmware and Python Tests
 
 on:
   push:
@@ -10,7 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  protection-tests:
+  embedded-c-tests:
+    name: Embedded C Protection Tests
     runs-on: ubuntu-24.04
 
     steps:
@@ -19,7 +20,7 @@ jobs:
 
       - name: Compile protection tests
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -UNDEBUG \
+          gcc -std=c11 -Wall -Wextra -Werror -O0 -UNDEBUG \
             -IInc \
             Src/protection.c \
             Src/critical_fault.c \
@@ -29,3 +30,23 @@ jobs:
 
       - name: Run protection tests
         run: ./test_protection_timed
+
+  python-tests:
+    name: Python Protocol Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Run Python unit tests
+        run: |
+          python -m unittest discover \
+            -s tests \
+            -p "test_*.py" \
+            -v
