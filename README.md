@@ -219,6 +219,12 @@ Real STM32-to-PC telemetry transmission has not yet been validated on hardware.
 
 ## 7. Python Monitoring Dashboard
 
+### Dashboard Preview
+
+![STM32 DC Power Protection Dashboard](docs/images/dashboard.png)
+
+*Python monitoring dashboard running in UART simulation mode. Hardware integration and validation are pending.*
+
 The Python dashboard provides:
 
 - Real-time voltage visualization
